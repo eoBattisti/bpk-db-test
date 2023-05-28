@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  redis:
+    image: redis
+    command: redis-server
+    ports:
+      - "14000:6379"
+
+  database:
+    image: postgres
+    volumes:
+      - database_data:/var/lib/postgresql/data
+
+  application:
+    build:
+      context: ./django/
+    restart: always
+    command: python manage.py runserver 0.0.0.0:9000
+    ports:
+      - "127.0.0.1:9000:9000"
+    volumes:
+      - ./django:/setup
+    links:
+      - database
+      - redis
+    depends_on:
+      - database
+      - redis
+
+volumes:
+  database_data:

@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+
+  database:
+    env_file:
+      - ./env/database.env
+
+  application:
+    env_file:
+      - ./env/database.env
+      - ./env/application.env
